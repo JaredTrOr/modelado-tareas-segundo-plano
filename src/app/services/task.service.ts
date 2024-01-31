@@ -1,11 +1,14 @@
 import { Injectable } from '@angular/core';
 import { time } from '../utils/time';
 import { Task } from '../models/task';
+import { TimerService } from './timer.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TaskService {
+
+  constructor(private timerService: TimerService){}
 
   //Default process values
   defaultConfiguration: Task = {
@@ -30,6 +33,7 @@ export class TaskService {
     }
 
     await Promise.all(this.tasksInProgress);
+    this.timerService.stop() //--> Stop timer
   }
 
   getTasksInProgress(): Promise<string>[] {
@@ -47,4 +51,5 @@ export class TaskService {
   changeConfiguration(configuration: Task) {
     this.defaultConfiguration = configuration;
   }
+
 }

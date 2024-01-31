@@ -13,15 +13,23 @@
 
         <div class="mt-3">
           <p><label for="">Tiempo de envío:</label></p>
-          <input [(ngModel)]="taskProcessConfiguration.sendingTime" type="text" class="form-control" required>
+          <input [(ngModel)]="taskProcessConfiguration.sendingTime" type="number" class="form-control" required>
         </div>
         
         <div class="mt-3">
           <p><label for="">Número de tareas a ejecutar:</label></p>
           <input [(ngModel)]="taskProcessConfiguration.numberOfTasksToExecute" type="number" class="form-control" required>
         </div>
+
+        <div>
+          <button (click)="startProcess()" class="mt-3 btn btn-warning">Empezar proceso</button>
+        </div>
+
+        <div class="mt-5">
+            <h3>Tiempo de ejecución</h3>
+            <h3>{{ formattedTime }}</h3>
+        </div>
         
-        <button (click)="startProcess()" class="mt-3 btn btn-warning">Empezar proceso</button>
       </div>
     </div>
 
@@ -54,7 +62,7 @@
       <div class="mt-5 tasks-resolved-container">
         <div *ngFor="let taskPromise of tasksInProgress, let i = index">
           <div class="p-3 border border-dark text-success" *ngIf="taskPromise | async">
-            {{ taskPromise | async }}
+            {{  taskPromise | async }} 
           </div>
         </div>
       </div>

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TaskService } from './services/task.service';
 import { Task } from './models/task';
+import { TimerService } from './services/timer.service';
 
 @Component({
   selector: 'app-root',
@@ -13,7 +14,13 @@ export class AppComponent implements OnInit{
   tasksInProgress: Promise<string>[] = [];
   feedbackMessages: string[] = [];
 
-  constructor(private taskService: TaskService) {}
+  //Timer
+  private intervalId: any;
+  formattedTime: string = '00:00.000';
+
+  taskCompletedTime: Object[] = [];
+
+  constructor(private taskService: TaskService, private timerService: TimerService) {}
 
   ngOnInit(): void {
     this.getTaskProcessConfiguration();
@@ -24,6 +31,7 @@ export class AppComponent implements OnInit{
     this.getFeedbackMessages();
 
     this.taskService.changeConfiguration(this.taskProcessConfiguration)
+    this.start() //--> Start timer
     this.taskService.processTasks()
   }
 
@@ -37,6 +45,13 @@ export class AppComponent implements OnInit{
 
   getTaskProcessConfiguration(): void {
     this.taskProcessConfiguration = this.taskService.getConfiguration();
+  }
+
+  start() {
+    this.timerService.start();
+    this.intervalId = setInterval(() => {
+      this.formattedTime = this.timerService.getTime();
+    }, 1);
   }
 
 }
